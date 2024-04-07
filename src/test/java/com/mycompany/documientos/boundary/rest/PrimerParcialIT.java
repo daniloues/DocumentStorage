@@ -13,7 +13,14 @@ import jakarta.ws.rs.client.Invocation;
 import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.ResultSet;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
@@ -24,9 +31,7 @@ import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.Network;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
-import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.lifecycle.Startables;
 import org.testcontainers.utility.MountableFile;
 import sv.edu.ues.occ.ingenieria.tpi135.documientos.boundary.rest.RestResourceHeaderPattern;
 
@@ -47,44 +52,88 @@ public class PrimerParcialIT {
     static Long ID_METADATO_CREADO;
 
     static Network network = Network.newNetwork();
-
+    static Integer puertoDB;
     private static final MountableFile war = MountableFile.forHostPath(Paths.get("target/Documientos-1.0-SNAPSHOT.war").toAbsolutePath(), 0777);
-    
-    @Container
-    static PostgreSQLContainer pgdb = new PostgreSQLContainer<>("postgres:15.3-alpine")
-            .withDatabaseName("documientostpi135")
-            .withPassword("abc123")
-            .withUsername("postgres")
-            .withInitScript("documientos.sql")
-            .withExposedPorts(5432)
-            .withNetwork(network)
-            .withNetworkAliases("pgdb");
 
-    @Container
-    static GenericContainer payara = new GenericContainer("payara/server-full:6.2024.3-jdk17")
-            .withCopyFileToContainer(war, "/opt/payara/deployments/aplicacion.war")
-            .waitingFor(Wait.forLogMessage(".*deploy AdminCommandApplication deployed with name aplicacion.*", 1))
-            .withExposedPorts(8080)
-            .withNetwork(network)
-            .dependsOn(pgdb)
-            .withEnv("DB_USER", pgdb.getDatabaseName())
-            .withEnv("DB_PASSWORD", pgdb.getPassword())
-            .withEnv("DB_JDBC_URL", "jdbc:postgresql://" + pgdb.getContainerIpAddress() + ":" + pgdb.getMappedPort(5432) + "/" + pgdb.getDatabaseName());
+    static PostgreSQLContainer pgdb;
 
-    static Client cliente = ClientBuilder.newClient();
+    static GenericContainer payara;
 
-    WebTarget target
-            = cliente.target(
-                    String.format("http://localhost:%d/aplicacion/resources/",
-                            payara.getMappedPort(8080)));
-    
-    
-    
+    static Client cliente;
+    static WebTarget target;
+
+    private static final File postgresConf = new File("src/test/resources/pg_hba.conf");
+
     @BeforeAll
-    public static void setup() {
-        Startables.deepStart(pgdb, payara).join(); // Ensure all containers are started
+    public static void setup() throws SQLException, UnsupportedOperationException, IOException, InterruptedException {
+
+        pgdb = new PostgreSQLContainer<>("postgres:15.3-alpine")
+                .withDatabaseName("documientostpi135")
+                .withPassword("abc123")
+                .withUsername("postgres")
+                .withInitScript("documientos.sql")
+                .withExposedPorts(5432)
+                .withNetwork(network)
+                .withNetworkAliases("pgdb")
+                .withLogConsumer(outputFrame -> System.out.println("[PostgreSQL Container] " + outputFrame.getUtf8String()))
+                .waitingFor(Wait.forListeningPort());
+
+        pgdb.start();
+
+        pgdb.withCopyFileToContainer(MountableFile.forHostPath(postgresConf.getAbsolutePath()), "/var/lib/postgresql/data/pg_hba.conf");
+
+        // Define the command to list the contents of the directory
+        String[] command = {"cat", "/var/lib/postgresql/data/pg_hba.conf"};
+
+// Execute the command within the container and get the output
+        String directoryContents = pgdb.execInContainer(command).getStdout();
+
+// Print or log the contents of the directory
+        System.out.println("Contents of /var/lib/postgresql/data:\n" + directoryContents);
+
+        //PROBANDO QUE REALMENTE SE CREA Y CORRE LA BASE DE DATOS, FUNCIONA
+        try (Connection connection = DriverManager.getConnection("jdbc:postgresql://" + pgdb.getContainerIpAddress() + ":" + pgdb.getMappedPort(5432) + "/" + pgdb.getDatabaseName(), pgdb.getUsername(), pgdb.getPassword())) {
+            // Execute a simple SQL query to test connectivity
+            Statement stmt = connection.createStatement();
+
+            // Execute a query
+            ResultSet rs = stmt.executeQuery("SELECT * FROM tipo_atributo");
+
+            // Process the result set
+            while (rs.next()) {
+                // Retrieve by column name
+                int tipo_atributo_id = rs.getInt("id_tipo_atributo");
+                String name = rs.getString("nombre");
+                // Print the values or do whatever processing you need
+                System.out.println("ID: " + tipo_atributo_id + ", Name: " + name);
+            }
+        }
+
+        puertoDB = pgdb.getMappedPort(5432);
+
+        // A PESAR QUE LA URL ES CORRECTA, PAYARA ES INCAPAZ DE CONECTARSE
+        payara = new GenericContainer<>("payara/full_pg:6.2024.3")
+                .waitingFor(Wait.forLogMessage(".*JMXStartupService has started JMXConnector on JMXService.*", 1))
+                .withExposedPorts(8080)
+                .withLogConsumer(outputFrame -> System.out.println("[Payara Container] " + outputFrame.getUtf8String()))
+                .withNetwork(network)
+                .dependsOn(pgdb)
+                .withCopyFileToContainer(war, "/opt/payara/deployments/aplicacion.war")
+                .withEnv("POSTGRES_USER", pgdb.getUsername())
+                .withEnv("POSTGRES_PASSWORD", pgdb.getPassword())
+                .withEnv("POSTGRES_DBNAME", pgdb.getDatabaseName())
+                .withEnv("POSTGRES_PORT", "5432")
+                .withEnv("POSTGRES_SERVERNAME", "pgdb");
+
+        payara.start();
+
+
+        cliente = ClientBuilder.newClient();
+        target = cliente.target(
+                String.format("http://localhost:%d/aplicacion/resources/",
+                        payara.getMappedPort(8080)));
     }
-    
+
     @Test
     @Order(1)
     public void testCreateTipoAtributo() {

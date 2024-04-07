@@ -20,7 +20,7 @@ import java.io.Serializable;
 public class AtributoBean extends AccesoADatos<Atributo> implements Serializable{
     
     
-   // @PersistenceContext(unitName = "DocumientosPU")
+    @PersistenceContext(unitName = "DocumientosPU")
     EntityManager em;
     
     

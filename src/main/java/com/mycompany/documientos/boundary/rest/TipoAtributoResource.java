@@ -1,5 +1,4 @@
 
-
 import com.mycompany.documientos.control.TipoAtributoBean;
 import com.mycompany.documientos.entity.TipoAtributo;
 import jakarta.inject.Inject;
@@ -28,15 +27,12 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.boundary.rest.RestResourceHe
  *
  * @author daniloues
  */
-@Path("TipoAtributo")
+@Path("tipoatributo")
 public class TipoAtributoResource implements Serializable {
 
     // SE DEBE COMPROBAR QUE SE HAGA REFERENCIA A IDS PADRE QUE EXISTAN O SEAN NULOS *PENDIENTE
-    
-    
     @Inject
     TipoAtributoBean taBean;
-    
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})
@@ -67,26 +63,26 @@ public class TipoAtributoResource implements Serializable {
                 build();
     }
 
-    
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createTipoAtributo(TipoAtributo nuevo) {
-        try {
-            taBean.create(nuevo);
-            // Return 201 Created with Location header if creation is successful
-            return Response.status(Response.Status.CREATED)
-                           .header("Location", "/tipoatributo/" + nuevo.getIdTipoAtributo())
-                           .build();
-        } catch (IllegalStateException | IllegalArgumentException e) {
-            // Handle exceptions thrown by create method
-            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)
-                           .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, e.getMessage())
-                           .build();
+
+        if (nuevo != null && nuevo.getNombre() != null && nuevo.getNombreScreen() != null && nuevo.getExpresionRegular() != null) {
+            try {
+                taBean.create(nuevo);
+                return Response.status(Response.Status.CREATED)
+                        .header("Location", "/tipoatributo/" + nuevo.getIdTipoAtributo())
+                        .build();
+            } catch (Exception ex) {
+                Logger.getLogger(ex.getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            }
         }
+
+        return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)
+                .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, nuevo.toString())
+                .build();
     }
-    
-    
-    
+
 //    @POST
 //    @Produces({MediaType.APPLICATION_JSON})
 //    @Consumes({MediaType.APPLICATION_JSON})
@@ -109,7 +105,6 @@ public class TipoAtributoResource implements Serializable {
 //                header("missing-parameter", "id").
 //                build();
 //    }
-
     @PUT
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})

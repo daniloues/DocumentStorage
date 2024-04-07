@@ -20,7 +20,7 @@ import java.io.Serializable;
 public class MetadatoBean extends AccesoADatos<Metadato> implements Serializable{
     
     
-  //  @PersistenceContext(unitName = "DocumientosPU")
+    @PersistenceContext(unitName = "DocumientosPU")
     EntityManager em;
     
     

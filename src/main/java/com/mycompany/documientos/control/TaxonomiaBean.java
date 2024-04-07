@@ -19,7 +19,7 @@ import jakarta.persistence.PersistenceContext;
 public class TaxonomiaBean extends AccesoADatos<Taxonomia>{
     
     
-   // @PersistenceContext(unitName = "DocumientosPU")
+    @PersistenceContext(unitName = "DocumientosPU")
     EntityManager em;
     
     
