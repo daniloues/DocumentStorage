@@ -1,6 +1,8 @@
+package com.mycompany.documientos.boundary.rest;
 
-import com.mycompany.documientos.control.TipoAtributoBean;
-import com.mycompany.documientos.entity.TipoAtributo;
+
+import com.mycompany.documientos.control.AtributoBean;
+import com.mycompany.documientos.entity.Atributo;
 import com.mycompany.documientos.resources.RestResourceHeaderPattern;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
@@ -27,22 +29,22 @@ import java.util.logging.Logger;
  *
  * @author daniloues
  */
-@Path("tipoatributo")
-public class TipoAtributoResource implements Serializable {
+@Path("atributo")
+public class AtributoResource implements Serializable {
 
     // SE DEBE COMPROBAR QUE SE HAGA REFERENCIA A IDS PADRE QUE EXISTAN O SEAN NULOS *PENDIENTE
     @Inject
-    TipoAtributoBean taBean;
+    AtributoBean aBean;
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public List<TipoAtributo> findRange(
+    public List<Atributo> findRange(
             @QueryParam(value = "first")
             @DefaultValue(value = "0") int first,
             @QueryParam(value = "page_size")
             @DefaultValue(value = "100000") int pageSize) {
 
-        return taBean.findRange(first, pageSize);
+        return aBean.findRange(first, pageSize);
     }
 
     @GET
@@ -50,13 +52,13 @@ public class TipoAtributoResource implements Serializable {
     @Path("/{id}")
     public Response findById(
             @PathParam("id")
-            final Integer idTipoAtributo) {
-        if (idTipoAtributo != null) {
-            TipoAtributo findById = taBean.findById(idTipoAtributo);
+            final Integer idAtributo) {
+        if (idAtributo != null) {
+            Atributo findById = aBean.findById(idAtributo);
             if (findById != null) {
                 return Response.status(Response.Status.OK).entity(findById).build();
             }
-            return Response.status(Response.Status.NOT_FOUND).header("not-found", idTipoAtributo).build();
+            return Response.status(Response.Status.NOT_FOUND).header("not-found", idAtributo).build();
         }
         return Response.status(422).
                 header("missing-parameter", "id").
@@ -65,14 +67,13 @@ public class TipoAtributoResource implements Serializable {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createTipoAtributo(TipoAtributo nuevo) {
+    public Response createAtributo(Atributo nuevo) {
 
-        if (nuevo != null && nuevo.getNombre() != null && nuevo.getNombreScreen() != null && nuevo.getExpresionRegular() != null) {
+        if (nuevo != null && nuevo.getNombre() != null && nuevo.getIdTipoDocumento() != null && nuevo.getIdTipoDocumento() != null) {
             try {
-                taBean.create(nuevo);
-                Long nuevoId = taBean.getNewestId();
+                aBean.create(nuevo);
                 return Response.status(Response.Status.CREATED)
-                        .header("Location", "/tipoatributo/" + nuevoId)
+                        .header("Location", "/atributo/" + nuevo.getIdAtributo())
                         .build();
             } catch (Exception ex) {
                 Logger.getLogger(ex.getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
@@ -87,15 +88,15 @@ public class TipoAtributoResource implements Serializable {
 //    @POST
 //    @Produces({MediaType.APPLICATION_JSON})
 //    @Consumes({MediaType.APPLICATION_JSON})
-//    public Response create(TipoAtributo registro,
+//    public Response create(Atributo registro,
 //            @Context UriInfo info
 //    ) {
-//        if (registro != null && registro.getIdTipoAtributo() != null && registro.getNombre() != null) {
+//        if (registro != null && registro.getIdAtributo() != null && registro.getNombre() != null) {
 //            try {
-//                taBean.create(registro);
+//                aBean.create(registro);
 //                URI requestUri = info.getAbsolutePath();
 //                return Response.status(Response.Status.CREATED).header("location", requestUri.toString()
-//                        + "/" + registro.getIdTipoAtributo()
+//                        + "/" + registro.getIdAtributo()
 //                ).build();
 //            } catch (Exception ex) {
 //                Logger.getLogger(ex.getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
@@ -109,15 +110,15 @@ public class TipoAtributoResource implements Serializable {
     @PUT
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response replace(TipoAtributo registro,
+    public Response replace(Atributo registro,
             @Context UriInfo info
     ) {
-        if (registro != null && registro.getIdTipoAtributo() != null && registro.getNombre() != null) {
+        if (registro != null && registro.getIdAtributo() != null && registro.getNombre() != null) {
             try {
-                taBean.modify(registro);
+                aBean.modify(registro);
                 URI requestUri = info.getAbsolutePath();
                 return Response.status(Response.Status.CREATED).header("location", requestUri.toString()
-                        + "/" + registro.getIdTipoAtributo()
+                        + "/" + registro.getIdAtributo()
                 ).build();
             } catch (Exception ex) {
                 Logger.getLogger(ex.getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
@@ -132,15 +133,15 @@ public class TipoAtributoResource implements Serializable {
     @DELETE
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response delete(TipoAtributo registro,
+    public Response delete(Atributo registro,
             @Context UriInfo info
     ) {
-        if (registro != null && registro.getIdTipoAtributo() != null && registro.getNombre() != null) {
+        if (registro != null && registro.getIdAtributo() != null && registro.getNombre() != null) {
             try {
-                taBean.delete(registro);
+                aBean.delete(registro);
                 URI requestUri = info.getAbsolutePath();
                 return Response.status(Response.Status.CREATED).header("location", requestUri.toString()
-                        + "/" + registro.getIdTipoAtributo()
+                        + "/" + registro.getIdAtributo()
                 ).build();
             } catch (Exception ex) {
                 Logger.getLogger(ex.getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);

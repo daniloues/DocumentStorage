@@ -6,6 +6,7 @@ import com.mycompany.documientos.entity.Metadato;
 import com.mycompany.documientos.entity.Taxonomia;
 import com.mycompany.documientos.entity.TipoAtributo;
 import com.mycompany.documientos.entity.TipoDocumento;
+import com.mycompany.documientos.resources.RestResourceHeaderPattern;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
@@ -33,7 +34,6 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.MountableFile;
-import sv.edu.ues.occ.ingenieria.tpi135.documientos.boundary.rest.RestResourceHeaderPattern;
 
 /**
  *
@@ -132,6 +132,7 @@ public class PrimerParcialIT {
         target = cliente.target(
                 String.format("http://localhost:%d/aplicacion/resources/",
                         payara.getMappedPort(8080)));
+        
     }
 
     @Test
@@ -143,6 +144,7 @@ public class PrimerParcialIT {
         Invocation.Builder builder = target.path("tipoatributo").request(MediaType.APPLICATION_JSON);
         Response respuesta = builder.post(Entity.entity(null, MediaType.APPLICATION_JSON));
         // payload nulo
+        
         Assertions.assertEquals(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO, respuesta.getStatus());
         // payload vacio
         respuesta = builder.post(Entity.entity(nuevo, MediaType.APPLICATION_JSON));
@@ -296,7 +298,6 @@ public class PrimerParcialIT {
         //// crear tipo de documento equivocado
         Invocation.Builder builderT = target.path("tipodocumento").request(MediaType.APPLICATION_JSON);
         TipoDocumento nuevoT = new TipoDocumento();
-
         nuevoT.setIdTipoDocumento(null);
         nuevoT.setActivo(Boolean.TRUE);
         nuevoT.setNombre("tipo equivocado");
@@ -306,6 +307,7 @@ public class PrimerParcialIT {
         Assertions.assertTrue(respuestaT.getHeaders().containsKey("Location"));
         String[] lex = respuestaT.getHeaderString("Location").split("/");
         nuevoT.setIdTipoDocumento(Integer.valueOf(lex[lex.length - 1]));
+        
         //// crear atributo equivocado
 
         Atributo nuevoA = new Atributo();
@@ -334,7 +336,6 @@ public class PrimerParcialIT {
 
         respuesta = builder.post(Entity.entity(nuevo, MediaType.APPLICATION_JSON));
         Assertions.assertEquals(405, respuesta.getStatus());
-
         // crear atributo valido
         nuevo = new Metadato();
         nuevo.setIdAtributo(new Atributo(ID_ATRIBUTO_CREADO));
@@ -382,6 +383,7 @@ public class PrimerParcialIT {
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .get();
+        System.out.print(payara.getLogs());
         Assertions.assertEquals(200, respuesta.getStatus());
         json = respuesta.readEntity(String.class);
         Assertions.assertNotNull(json);

@@ -33,10 +33,11 @@ import java.util.Date;
     @NamedQuery(name = "Documento.findByNombre", query = "SELECT d FROM Documento d WHERE d.nombre = :nombre"),
     @NamedQuery(name = "Documento.findByReferenciaExterna", query = "SELECT d FROM Documento d WHERE d.referenciaExterna = :referenciaExterna"),
     @NamedQuery(name = "Documento.findByUbicacionFisica", query = "SELECT d FROM Documento d WHERE d.ubicacionFisica = :ubicacionFisica"),
-    @NamedQuery(name = "Documento.findByUri", query = "SELECT d FROM Documento d WHERE d.uri = :uri"),
+    @NamedQuery(name = "Documento.findByUri", query = "SELECT d FROM Documento d WHERE d.url = :url"),
     @NamedQuery(name = "Documento.findByFechaCreacion", query = "SELECT d FROM Documento d WHERE d.fechaCreacion = :fechaCreacion"),
     @NamedQuery(name = "Documento.findByCreadoPor", query = "SELECT d FROM Documento d WHERE d.creadoPor = :creadoPor"),
-    @NamedQuery(name = "Documento.findByComentarios", query = "SELECT d FROM Documento d WHERE d.comentarios = :comentarios")})
+    @NamedQuery(name = "Documento.findByComentarios", query = "SELECT d FROM Documento d WHERE d.comentarios = :comentarios"),
+    @NamedQuery(name = "Documento.findLastId", query = "SELECT MAX(d.idDocumento) FROM Documento d")})
 public class Documento implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -51,8 +52,8 @@ public class Documento implements Serializable {
     private String referenciaExterna;
     @Column(name = "ubicacion_fisica")
     private String ubicacionFisica;
-    @Column(name = "uri")
-    private String uri;
+    @Column(name = "url")
+    private String url;
     @Column(name = "fecha_creacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
@@ -105,11 +106,11 @@ public class Documento implements Serializable {
     }
 
     public String getUri() {
-        return uri;
+        return url;
     }
 
-    public void setUri(String uri) {
-        this.uri = uri;
+    public void setUri(String url) {
+        this.url = url;
     }
 
     public Date getFechaCreacion() {

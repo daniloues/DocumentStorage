@@ -28,11 +28,14 @@ import java.util.Collection;
 @Table(name = "atributo")
 @NamedQueries({
     @NamedQuery(name = "Atributo.findAll", query = "SELECT a FROM Atributo a"),
+    @NamedQuery(name = "Atributo.findAtributoByTipoDocumentoExists", query = "SELECT a FROM Atributo a JOIN a.idTipoDocumento td WHERE td.idTipoDocumento = :idTipoDocumento AND a.idAtributo = :idAtributo"),
+    @NamedQuery(name = "Atributo.findTipoDocumentobyId", query = "SELECT a.idTipoDocumento.idTipoDocumento FROM Atributo a WHERE a.idAtributo = :idAtributo"),
     @NamedQuery(name = "Atributo.findByIdAtributo", query = "SELECT a FROM Atributo a WHERE a.idAtributo = :idAtributo"),
     @NamedQuery(name = "Atributo.findByNombre", query = "SELECT a FROM Atributo a WHERE a.nombre = :nombre"),
     @NamedQuery(name = "Atributo.findByNombrePantalla", query = "SELECT a FROM Atributo a WHERE a.nombrePantalla = :nombrePantalla"),
     @NamedQuery(name = "Atributo.findByIndicacionesPantalla", query = "SELECT a FROM Atributo a WHERE a.indicacionesPantalla = :indicacionesPantalla"),
-    @NamedQuery(name = "Atributo.findByObligatorio", query = "SELECT a FROM Atributo a WHERE a.obligatorio = :obligatorio")})
+    @NamedQuery(name = "Atributo.findByObligatorio", query = "SELECT a FROM Atributo a WHERE a.obligatorio = :obligatorio"),
+    @NamedQuery(name = "Atributo.findLastId", query = "SELECT MAX(a.idAtributo) FROM Atributo a")})
 public class Atributo implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -153,5 +156,5 @@ public class Atributo implements Serializable {
     public String toString() {
         return "com.mycompany.documientos.entity.Atributo[ idAtributo=" + idAtributo + " ]";
     }
-    
+
 }

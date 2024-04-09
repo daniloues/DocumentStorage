@@ -31,7 +31,8 @@ import java.util.Collection;
     @NamedQuery(name = "TipoAtributo.findByObservaciones", query = "SELECT t FROM TipoAtributo t WHERE t.observaciones = :observaciones"),
     @NamedQuery(name = "TipoAtributo.findByExpresionRegular", query = "SELECT t FROM TipoAtributo t WHERE t.expresionRegular = :expresionRegular"),
     @NamedQuery(name = "TipoAtributo.findByNombreScreen", query = "SELECT t FROM TipoAtributo t WHERE t.nombreScreen = :nombreScreen"),
-    @NamedQuery(name = "TipoAtributo.findByIndicacionesScreen", query = "SELECT t FROM TipoAtributo t WHERE t.indicacionesScreen = :indicacionesScreen")})
+    @NamedQuery(name = "TipoAtributo.findByIndicacionesScreen", query = "SELECT t FROM TipoAtributo t WHERE t.indicacionesScreen = :indicacionesScreen"),
+    @NamedQuery(name = "TipoAtributo.findLastId", query = "SELECT MAX(t.idTipoAtributo) FROM TipoAtributo t")})
 public class TipoAtributo implements Serializable {
 
     private static final long serialVersionUID = 1L;

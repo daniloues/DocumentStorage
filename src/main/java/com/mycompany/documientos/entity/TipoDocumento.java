@@ -29,7 +29,8 @@ import java.util.Collection;
     @NamedQuery(name = "TipoDocumento.findByIdTipoDocumento", query = "SELECT t FROM TipoDocumento t WHERE t.idTipoDocumento = :idTipoDocumento"),
     @NamedQuery(name = "TipoDocumento.findByNombre", query = "SELECT t FROM TipoDocumento t WHERE t.nombre = :nombre"),
     @NamedQuery(name = "TipoDocumento.findByActivo", query = "SELECT t FROM TipoDocumento t WHERE t.activo = :activo"),
-    @NamedQuery(name = "TipoDocumento.findByObservaciones", query = "SELECT t FROM TipoDocumento t WHERE t.observaciones = :observaciones")})
+    @NamedQuery(name = "TipoDocumento.findByObservaciones", query = "SELECT t FROM TipoDocumento t WHERE t.observaciones = :observaciones"),
+    @NamedQuery(name = "TipoDocumento.findLastId", query = "SELECT MAX(t.idTipoDocumento) FROM TipoDocumento t")})
 public class TipoDocumento implements Serializable {
 
     private static final long serialVersionUID = 1L;

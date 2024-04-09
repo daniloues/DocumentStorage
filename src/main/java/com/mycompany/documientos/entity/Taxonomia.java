@@ -28,8 +28,10 @@ import java.util.Date;
 @Table(name = "taxonomia")
 @NamedQueries({
     @NamedQuery(name = "Taxonomia.findAll", query = "SELECT t FROM Taxonomia t"),
+    @NamedQuery(name = "Taxonomia.findTipoDocumentoByDocumento", query = "SELECT t.idTipoDocumento.idTipoDocumento FROM Taxonomia t WHERE t.idDocumento = :idDocumento"),
     @NamedQuery(name = "Taxonomia.findByIdTaxonomia", query = "SELECT t FROM Taxonomia t WHERE t.idTaxonomia = :idTaxonomia"),
-    @NamedQuery(name = "Taxonomia.findByFechaCreacion", query = "SELECT t FROM Taxonomia t WHERE t.fechaCreacion = :fechaCreacion")})
+    @NamedQuery(name = "Taxonomia.findByFechaCreacion", query = "SELECT t FROM Taxonomia t WHERE t.fechaCreacion = :fechaCreacion"),
+    @NamedQuery(name = "Taxonomia.findLastId", query = "SELECT MAX(t.idTaxonomia) FROM Taxonomia t")})
 public class Taxonomia implements Serializable {
 
     private static final long serialVersionUID = 1L;

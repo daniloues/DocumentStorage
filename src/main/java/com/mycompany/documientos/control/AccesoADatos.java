@@ -7,6 +7,7 @@ package com.mycompany.documientos.control;
 import jakarta.ejb.Local;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -23,8 +24,8 @@ import java.util.logging.Logger;
  */
 @Stateless
 @Local
-public abstract class AccesoADatos<T> implements Serializable{
-    
+public abstract class AccesoADatos<T> implements Serializable {
+
     final Class tipoDato;
 
     public AccesoADatos(Class tipoDato) {
@@ -212,5 +213,25 @@ public abstract class AccesoADatos<T> implements Serializable{
         }
         throw new IllegalArgumentException();
     }
-    
+
+    public Long getNewestId() {
+
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+
+        } catch (Exception ex) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        if (em != null) {
+            try {
+                Query q = em.createNamedQuery(entityQuery()+".findLastId");
+                return ( (Long) Long.valueOf(q.getSingleResult().toString()));
+            } catch (Exception ex) {
+                Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            }
+        }
+        throw new IllegalStateException();
+
+    }
 }

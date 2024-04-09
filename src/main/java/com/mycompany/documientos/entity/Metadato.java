@@ -31,7 +31,8 @@ import java.util.Date;
     @NamedQuery(name = "Metadato.findByIdMetadato", query = "SELECT m FROM Metadato m WHERE m.idMetadato = :idMetadato"),
     @NamedQuery(name = "Metadato.findByValor", query = "SELECT m FROM Metadato m WHERE m.valor = :valor"),
     @NamedQuery(name = "Metadato.findByFechaCreacion", query = "SELECT m FROM Metadato m WHERE m.fechaCreacion = :fechaCreacion"),
-    @NamedQuery(name = "Metadato.findByComentarios", query = "SELECT m FROM Metadato m WHERE m.comentarios = :comentarios")})
+    @NamedQuery(name = "Metadato.findByComentarios", query = "SELECT m FROM Metadato m WHERE m.comentarios = :comentarios"),
+    @NamedQuery(name = "Metadato.findLastId", query = "SELECT MAX(m.idMetadato) FROM Metadato m")})
 public class Metadato implements Serializable {
 
     private static final long serialVersionUID = 1L;
