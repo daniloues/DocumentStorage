@@ -76,7 +76,7 @@ ALTER SEQUENCE public.documento_id_documento_seq OWNED BY public.documento.id_do
 --
 
 CREATE TABLE public.metadato (
-    id_metadata bigint NOT NULL,
+    id_metadato bigint NOT NULL,
     id_documento bigint,
     id_atributo bigint,
     valor text,
@@ -87,10 +87,10 @@ CREATE TABLE public.metadato (
 
 --
 -- TOC entry 210 (class 1259 OID 17681)
--- Name: metadato_id_metadata_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: metadato_id_metadato_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.metadato_id_metadata_seq
+CREATE SEQUENCE public.metadato_id_metadato_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -101,10 +101,10 @@ CREATE SEQUENCE public.metadato_id_metadata_seq
 --
 -- TOC entry 3065 (class 0 OID 0)
 -- Dependencies: 210
--- Name: metadato_id_metadata_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: metadato_id_metadato_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.metadato_id_metadata_seq OWNED BY public.metadato.id_metadata;
+ALTER SEQUENCE public.metadato_id_metadato_seq OWNED BY public.metadato.id_metadato;
 
 
 --
@@ -234,10 +234,10 @@ ALTER TABLE ONLY public.documento ALTER COLUMN id_documento SET DEFAULT nextval(
 
 --
 -- TOC entry 2895 (class 2604 OID 17686)
--- Name: metadato id_metadata; Type: DEFAULT; Schema: public; Owner: -
+-- Name: metadato id_metadato; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.metadato ALTER COLUMN id_metadata SET DEFAULT nextval('public.metadato_id_metadata_seq'::regclass);
+ALTER TABLE ONLY public.metadato ALTER COLUMN id_metadato SET DEFAULT nextval('public.metadato_id_metadato_seq'::regclass);
 
 
 --
@@ -340,10 +340,10 @@ SELECT pg_catalog.setval('public.documento_id_documento_seq', 1, false);
 --
 -- TOC entry 3071 (class 0 OID 0)
 -- Dependencies: 210
--- Name: metadato_id_metadata_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: metadato_id_metadato_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.metadato_id_metadata_seq', 1, false);
+SELECT pg_catalog.setval('public.metadato_id_metadato_seq', 1, false);
 
 
 --
@@ -393,11 +393,11 @@ ALTER TABLE ONLY public.documento
 
 --
 -- TOC entry 2909 (class 2606 OID 17692)
--- Name: metadato pk_metadata; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: metadato pk_metadato; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.metadato
-    ADD CONSTRAINT pk_metadata PRIMARY KEY (id_metadata);
+    ADD CONSTRAINT pk_metadato PRIMARY KEY (id_metadato);
 
 
 --
@@ -455,20 +455,20 @@ ALTER TABLE ONLY public.atributo
 
 --
 -- TOC entry 2915 (class 2606 OID 17698)
--- Name: metadato fk_metadata_atributo; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: metadato fk_metadato_atributo; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.metadato
-    ADD CONSTRAINT fk_metadata_atributo FOREIGN KEY (id_atributo) REFERENCES public.atributo(id_atributo) ON UPDATE RESTRICT ON DELETE CASCADE;
+    ADD CONSTRAINT fk_metadato_atributo FOREIGN KEY (id_atributo) REFERENCES public.atributo(id_atributo) ON UPDATE RESTRICT ON DELETE CASCADE;
 
 
 --
 -- TOC entry 2914 (class 2606 OID 17693)
--- Name: metadato fk_metadata_documento; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: metadato fk_metadato_documento; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.metadato
-    ADD CONSTRAINT fk_metadata_documento FOREIGN KEY (id_documento) REFERENCES public.documento(id_documento) ON UPDATE CASCADE ON DELETE RESTRICT;
+    ADD CONSTRAINT fk_metadato_documento FOREIGN KEY (id_documento) REFERENCES public.documento(id_documento) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --

@@ -4,6 +4,7 @@ import com.mycompany.documientos.control.AtributoBean;
 import com.mycompany.documientos.control.DocumentoBean;
 import com.mycompany.documientos.control.MetadatoBean;
 import com.mycompany.documientos.control.TaxonomiaBean;
+import com.mycompany.documientos.entity.Atributo;
 import com.mycompany.documientos.entity.Documento;
 import com.mycompany.documientos.entity.Metadato;
 import com.mycompany.documientos.entity.Taxonomia;
@@ -63,12 +64,13 @@ public class DocumentoResource implements Serializable {
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    @Path("/{id}")
+    @Path("/{idDocumento}")
     public Response findById(
-            @PathParam("id")
+            @PathParam("idDocumento")
             final Integer idDocumento) {
         if (idDocumento != null) {
-            Documento findById = dBean.findById(idDocumento);
+            
+            Documento findById = dBean.findById(Long.valueOf(idDocumento.toString()));
             if (findById != null) {
                 return Response.status(Response.Status.OK).entity(findById).build();
             }
@@ -78,6 +80,56 @@ public class DocumentoResource implements Serializable {
                 header("missing-parameter", "id").
                 build();
     }
+    
+    
+    
+    
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    @Path("/{idDocumento}/metadato/{idMetadato}")
+    public Response findTaxonomiaById(
+            @PathParam("idDocumento") final Integer idDocumento,
+            @PathParam("idMetadato") final Integer idMetadato) {
+        if (idDocumento != null && idMetadato != null) {
+            // You may need to adjust this based on your implementation
+            Metadato metadatoExists = mBean.findMetadatoByDocumentoExists(idDocumento, idMetadato);
+            if (metadatoExists != null) {
+                return Response.status(Response.Status.OK).entity(metadatoExists).build();
+            }
+            return Response.status(Response.Status.NOT_FOUND)
+                    .header("not-found", "Attribute not found for TipoDocumento ID: " + idDocumento + " and Atributo ID: " + idMetadato)
+                    .build();
+        }
+        return Response.status(422)
+                .header("missing-parameter", "id")
+                .entity("Both TipoDocumento ID and Atributo ID must be provided")
+                .build();
+    }
+    
+    
+        @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    @Path("/{idDocumento}/taxonomia/{idTaxonomia}")
+    public Response findMetadatoById(
+            @PathParam("idDocumento") final Integer idDocumento,
+            @PathParam("idTaxonomia") final Integer idTaxonomia) {
+        if (idDocumento != null && idTaxonomia != null) {
+            // You may need to adjust this based on your implementation
+            Taxonomia taxonomiaExists = tBean.findTaxonomiaByDocumentoExists(idDocumento, idTaxonomia);
+            if (taxonomiaExists != null) {
+                return Response.status(Response.Status.OK).entity(taxonomiaExists).build();
+            }
+            return Response.status(Response.Status.NOT_FOUND)
+                    .header("not-found", "Attribute not found for TipoDocumento ID: " + idDocumento + " and Atributo ID: " + idTaxonomia)
+                    .build();
+        }
+        return Response.status(422)
+                .header("missing-parameter", "id")
+                .entity("Both TipoDocumento ID and Atributo ID must be provided")
+                .build();
+    }
+    
+    
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)

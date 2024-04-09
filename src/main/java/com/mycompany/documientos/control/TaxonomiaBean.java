@@ -51,6 +51,32 @@ public class TaxonomiaBean extends AccesoADatos<Taxonomia>{
         throw new IllegalStateException();
 
     }
+        
+        
+            
+     public Taxonomia findTaxonomiaByDocumentoExists(Integer idDocumento, Integer idTaxonomia) {
+
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+
+        } catch (Exception ex) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        if (em != null) {
+            try {
+                Query q = em.createNamedQuery(entityQuery()+".findTaxonomiaByDocumentoExists");
+                q.setParameter("idTaxonomia", idTaxonomia);
+                q.setParameter("idDocumento", idDocumento);
+                return (Taxonomia) q.getSingleResult();
+                
+            } catch (Exception ex) {
+                Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            }
+        }
+        throw new IllegalStateException();
+
+    }
     
     
         
