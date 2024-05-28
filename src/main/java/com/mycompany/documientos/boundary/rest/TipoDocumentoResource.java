@@ -69,27 +69,6 @@ public class TipoDocumentoResource implements Serializable {
                 build();
     }
 
-    @GET
-    @Produces({MediaType.APPLICATION_JSON})
-    @Path("/{idTipoDocumento}/atributo/{idAtributo}")
-    public Response findAtributoById(
-            @PathParam("idTipoDocumento") final Integer idTipoDocumento,
-            @PathParam("idAtributo") final Integer idAtributo) {
-        if (idTipoDocumento != null && idAtributo != null) {
-            // You may need to adjust this based on your implementation
-            Atributo atributoExists = aBean.findAtributoByTipoDocumentoExists(idTipoDocumento, idAtributo);
-            if (atributoExists != null) {
-                return Response.status(Response.Status.OK).entity(atributoExists).build();
-            }
-            return Response.status(Response.Status.NOT_FOUND)
-                    .header("not-found", "Attribute not found for TipoDocumento ID: " + idTipoDocumento + " and Atributo ID: " + idAtributo)
-                    .build();
-        }
-        return Response.status(422)
-                .header("missing-parameter", "id")
-                .entity("Both TipoDocumento ID and Atributo ID must be provided")
-                .build();
-    }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)

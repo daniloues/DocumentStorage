@@ -33,7 +33,7 @@ import java.util.Date;
     @NamedQuery(name = "Documento.findByNombre", query = "SELECT d FROM Documento d WHERE d.nombre = :nombre"),
     @NamedQuery(name = "Documento.findByReferenciaExterna", query = "SELECT d FROM Documento d WHERE d.referenciaExterna = :referenciaExterna"),
     @NamedQuery(name = "Documento.findByUbicacionFisica", query = "SELECT d FROM Documento d WHERE d.ubicacionFisica = :ubicacionFisica"),
-    @NamedQuery(name = "Documento.findByUri", query = "SELECT d FROM Documento d WHERE d.url = :url"),
+    @NamedQuery(name = "Documento.findByUrl", query = "SELECT d FROM Documento d WHERE d.url = :url"),
     @NamedQuery(name = "Documento.findByFechaCreacion", query = "SELECT d FROM Documento d WHERE d.fechaCreacion = :fechaCreacion"),
     @NamedQuery(name = "Documento.findByCreadoPor", query = "SELECT d FROM Documento d WHERE d.creadoPor = :creadoPor"),
     @NamedQuery(name = "Documento.findByComentarios", query = "SELECT d FROM Documento d WHERE d.comentarios = :comentarios"),
@@ -105,11 +105,11 @@ public class Documento implements Serializable {
         this.ubicacionFisica = ubicacionFisica;
     }
 
-    public String getUri() {
+    public String getUrl() {
         return url;
     }
 
-    public void setUri(String url) {
+    public void setUrl(String url) {
         this.url = url;
     }
 

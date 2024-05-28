@@ -4,6 +4,7 @@
  */
 package com.mycompany.documientos.entity;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -17,6 +18,7 @@ import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import java.io.Serializable;
 import java.util.Collection;
 
@@ -27,6 +29,7 @@ import java.util.Collection;
 @Entity
 @Table(name = "atributo")
 @NamedQueries({
+    @NamedQuery(name = "Atributo.findAtributosByTipoDocumentoId", query = "SELECT a FROM Atributo a WHERE a.idTipoDocumento.idTipoDocumento = :idTipoDocumento"),
     @NamedQuery(name = "Atributo.findAll", query = "SELECT a FROM Atributo a"),
     @NamedQuery(name = "Atributo.findAtributoByTipoDocumentoExists", query = "SELECT a FROM Atributo a JOIN a.idTipoDocumento td WHERE td.idTipoDocumento = :idTipoDocumento AND a.idAtributo = :idAtributo"),
     @NamedQuery(name = "Atributo.findTipoDocumentobyId", query = "SELECT a.idTipoDocumento.idTipoDocumento FROM Atributo a WHERE a.idAtributo = :idAtributo"),
@@ -56,6 +59,7 @@ public class Atributo implements Serializable {
     private Collection<Metadato> metadatoCollection;
     @JoinColumn(name = "id_tipo_atributo", referencedColumnName = "id_tipo_atributo")
     @ManyToOne(optional = false)
+    @JsonbTransient
     private TipoAtributo idTipoAtributo;
     @JoinColumn(name = "id_tipo_documento", referencedColumnName = "id_tipo_documento")
     @ManyToOne(optional = false)

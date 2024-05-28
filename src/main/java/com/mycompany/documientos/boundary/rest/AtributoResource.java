@@ -1,6 +1,5 @@
 package com.mycompany.documientos.boundary.rest;
 
-
 import com.mycompany.documientos.control.AtributoBean;
 import com.mycompany.documientos.entity.Atributo;
 import com.mycompany.documientos.resources.RestResourceHeaderPattern;
@@ -29,7 +28,7 @@ import java.util.logging.Logger;
  *
  * @author daniloues
  */
-@Path("atributo")
+@Path("tipodocumento/{idTipoDocumento}/atributo")
 public class AtributoResource implements Serializable {
 
     // SE DEBE COMPROBAR QUE SE HAGA REFERENCIA A IDS PADRE QUE EXISTAN O SEAN NULOS *PENDIENTE
@@ -38,31 +37,40 @@ public class AtributoResource implements Serializable {
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public List<Atributo> findRange(
-            @QueryParam(value = "first")
-            @DefaultValue(value = "0") int first,
-            @QueryParam(value = "page_size")
-            @DefaultValue(value = "100000") int pageSize) {
-
-        return aBean.findRange(first, pageSize);
+    public Response findAllByTipoDocumento(
+            @PathParam("idTipoDocumento") final Integer idTipoDocumento) {
+        if (idTipoDocumento != null) {
+            List<Atributo> registros = aBean.findByTipoDocumento(idTipoDocumento);
+            return Response.status(Response.Status.OK)
+                    .entity(registros)
+                    .build();
+        }
+        return Response.status(422)
+                .header("missing-parameter", "idTipoDocumento")
+                .entity("TipoDocumento ID must be provided")
+                .build();
     }
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    @Path("/{id}")
-    public Response findById(
-            @PathParam("id")
-            final Integer idAtributo) {
-        if (idAtributo != null) {
-            Atributo findById = aBean.findById(idAtributo);
-            if (findById != null) {
-                return Response.status(Response.Status.OK).entity(findById).build();
+    @Path("/{idAtributo}")
+    public Response findAtributoById(
+            @PathParam("idTipoDocumento") final Integer idTipoDocumento,
+            @PathParam("idAtributo") final Integer idAtributo) {
+        if (idTipoDocumento != null && idAtributo != null) {
+            // You may need to adjust this based on your implementation
+            Atributo atributoExists = aBean.findAtributoByTipoDocumentoExists(idTipoDocumento, idAtributo);
+            if (atributoExists != null) {
+                return Response.status(Response.Status.OK).entity(atributoExists).build();
             }
-            return Response.status(Response.Status.NOT_FOUND).header("not-found", idAtributo).build();
+            return Response.status(Response.Status.NOT_FOUND)
+                    .header("not-found", "Attribute not found for TipoDocumento ID: " + idTipoDocumento + " and Atributo ID: " + idAtributo)
+                    .build();
         }
-        return Response.status(422).
-                header("missing-parameter", "id").
-                build();
+        return Response.status(422)
+                .header("missing-parameter", "id")
+                .entity("Both TipoDocumento ID and Atributo ID must be provided")
+                .build();
     }
 
     @POST
@@ -85,28 +93,6 @@ public class AtributoResource implements Serializable {
                 .build();
     }
 
-//    @POST
-//    @Produces({MediaType.APPLICATION_JSON})
-//    @Consumes({MediaType.APPLICATION_JSON})
-//    public Response create(Atributo registro,
-//            @Context UriInfo info
-//    ) {
-//        if (registro != null && registro.getIdAtributo() != null && registro.getNombre() != null) {
-//            try {
-//                aBean.create(registro);
-//                URI requestUri = info.getAbsolutePath();
-//                return Response.status(Response.Status.CREATED).header("location", requestUri.toString()
-//                        + "/" + registro.getIdAtributo()
-//                ).build();
-//            } catch (Exception ex) {
-//                Logger.getLogger(ex.getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
-//            }
-//            return Response.status(500).header("create-exception", registro.toString()).build();
-//        }
-//        return Response.status(422).
-//                header("missing-parameter", "id").
-//                build();
-//    }
     @PUT
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})

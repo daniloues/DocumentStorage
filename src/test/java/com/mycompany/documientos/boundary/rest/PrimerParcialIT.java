@@ -127,12 +127,11 @@ public class PrimerParcialIT {
 
         payara.start();
 
-
         cliente = ClientBuilder.newClient();
         target = cliente.target(
                 String.format("http://localhost:%d/aplicacion/resources/",
                         payara.getMappedPort(8080)));
-        
+
     }
 
     @Test
@@ -144,7 +143,7 @@ public class PrimerParcialIT {
         Invocation.Builder builder = target.path("tipoatributo").request(MediaType.APPLICATION_JSON);
         Response respuesta = builder.post(Entity.entity(null, MediaType.APPLICATION_JSON));
         // payload nulo
-        
+
         Assertions.assertEquals(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO, respuesta.getStatus());
         // payload vacio
         respuesta = builder.post(Entity.entity(nuevo, MediaType.APPLICATION_JSON));
@@ -307,9 +306,8 @@ public class PrimerParcialIT {
         Assertions.assertTrue(respuestaT.getHeaders().containsKey("Location"));
         String[] lex = respuestaT.getHeaderString("Location").split("/");
         nuevoT.setIdTipoDocumento(Integer.valueOf(lex[lex.length - 1]));
-        
-        //// crear atributo equivocado
 
+        //// crear atributo equivocado
         Atributo nuevoA = new Atributo();
         nuevoA.setIdAtributo(1l);
         Invocation.Builder builderA = target.path("tipodocumento/{idTipoDocumento}/atributo")

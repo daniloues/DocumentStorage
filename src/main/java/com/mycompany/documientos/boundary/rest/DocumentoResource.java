@@ -107,7 +107,7 @@ public class DocumentoResource implements Serializable {
     }
     
     
-        @GET
+    @GET
     @Produces({MediaType.APPLICATION_JSON})
     @Path("/{idDocumento}/taxonomia/{idTaxonomia}")
     public Response findMetadatoById(
