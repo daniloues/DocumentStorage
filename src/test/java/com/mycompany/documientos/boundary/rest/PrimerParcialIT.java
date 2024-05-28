@@ -350,7 +350,7 @@ public class PrimerParcialIT {
     @Test
     @Order(7)
     public void testValidarResultados() {
-        System.out.println("validarResultadosITTT");
+        System.out.println("validarResultadosIT S");
 
         System.out.println("============== ID TIPO ATRIBUTO GENERADO " + ID_TIPO_ATRIBUTO_CREADO);
         Response respuesta = target.path("tipoatributo/{idTipoAtributo}")
