@@ -1,0 +1,23 @@
+{
+    // NO ESTA ABRIENDO, REQUIERE RECONFIGURAR Y REINSTALAR LO QUE SE UTILIZARA
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "firefox",
+            "request": "launch",
+            "name": "Launch Program",
+            "url": "localhost:3000",
+            "preLaunchTask": "lanzarBrowserSync",
+            "postDebugTask": "detenerBrowserSync",
+            "webRoot": "${workspaceFolder}/src",
+            "pathMappings": [
+                {
+                    "url": "http://localhost:3000/js",
+                    "path": "${workspaceFolder}/src/js"
+                }
+            ]
+        }
+    ],
+
+    
+}

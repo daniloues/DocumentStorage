@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='./resources/estilos/estilo.css'>
+    <script src='main.js'></script>
+</head>
+<body>
+    <p>Count: <span id="count">0</span></p>
+
+    <script>
+      // Create a new worker
+      const worker = new Worker('./js/control/contador.js');
+  
+      // Listen for messages from the worker
+      worker.onmessage = function(event) {
+        // Update the count in the HTML
+        document.getElementById('count').textContent = event.data;
+      };
+  
+      // Start the worker
+      function startWorker() {
+        // Send a message to the worker to start counting
+        worker.postMessage('start');
+      }
+  
+      // Stop the worker (optional)
+      function stopWorker() {
+        // Terminate the worker
+        worker.terminate();
+      }
+    </script>
+  
+    <!-- Button to start the worker -->
+    <button onclick="startWorker()">Start Worker</button>
+  
+    <!-- Button to stop the worker (optional) -->
+    <button onclick="stopWorker()">Stop Worker</button>
+</body>
+
+</html>
