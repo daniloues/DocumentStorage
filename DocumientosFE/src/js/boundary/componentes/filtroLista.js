@@ -8,8 +8,9 @@ class FiltrarLista extends HTMLElement {
 
     connectedCallback() {
         console.log("Me conecté al filtrar-lista componente ahorita");
+        const controlador = new TipoAtributoControlador();
 
-        this.fetchAttributes()
+        controlador.findAll()
             .then(attributes => {
                 console.log(attributes);
                 this.root.innerHTML = `
@@ -32,15 +33,6 @@ class FiltrarLista extends HTMLElement {
             });
     }
 
-    fetchAttributes() {
-        const controlador = new TipoAtributoControlador();
-
-        return new Promise((resolve, reject) => {
-            controlador.findAll()
-                .then(attributes => resolve(attributes))
-                .catch(error => reject(error));
-        });
-    }
 }
 
 customElements.define('filtrar-lista', FiltrarLista);

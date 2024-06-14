@@ -6,18 +6,30 @@ class TipoCE extends HTMLElement {
         this.root = this.attachShadow({ mode: "open" });
     }
 
-    async connectedCallback() {
-
+    connectedCallback() {
+        const tiposDocumento = null;
+        const controlador = new TipoDocumentoControlador();
         const tipoDocElement = document.getElementById('documentoMostrar');
-        const tiposDocumento = await this.fetchTiposDocumento();
-        this.root.innerHTML = `
+        controlador.findAll().then(attributes => {
+            console.log(attributes);
+            this.root.innerHTML = `
             <div>
                 <select id="filterSelect">
                     <option value="all">Seleccione tipo de documento</option>
                     ${tiposDocumento.map(tdoc => `<option value="${tdoc.idTipoDocumento}">${tdoc.nombre}</option>`).join('')}
                 </select>
             </div>
-        `;
+            `;
+        })
+            .catch(error => {
+                console.error('Error fetching attributes:', error);
+                this.root.innerHTML = `
+                <div>
+                    <p>Error loading attributes. Please try again later.</p>
+                </div>
+            `;
+            });
+
         if (tiposDocumento !== null) {
             if (tipoDocElement.style.display === 'none' || tipoDocElement.style.display === '') {
                 tipoDocElement.style.display = 'block';
@@ -26,16 +38,6 @@ class TipoCE extends HTMLElement {
             }
         }
 
-    }
-
-    async fetchTiposDocumento() {
-        const controlador = new TipoDocumentoControlador();
-        try {
-            return await controlador.findAll();
-        } catch (error) {
-            console.error('Error fetching attributes:', error);
-            return [];
-        }
     }
 
 }
