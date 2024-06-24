@@ -56,10 +56,10 @@ public class Atributo implements Serializable {
     @Column(name = "obligatorio")
     private Boolean obligatorio;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idAtributo")
+    @JsonbTransient
     private Collection<Metadato> metadatoCollection;
     @JoinColumn(name = "id_tipo_atributo", referencedColumnName = "id_tipo_atributo")
     @ManyToOne(optional = false)
-    @JsonbTransient
     private TipoAtributo idTipoAtributo;
     @JoinColumn(name = "id_tipo_documento", referencedColumnName = "id_tipo_documento")
     @ManyToOne(optional = false)

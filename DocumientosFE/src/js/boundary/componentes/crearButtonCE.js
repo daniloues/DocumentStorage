@@ -1,3 +1,5 @@
+import { toggleView } from '../../modelo/mostrarVista.js'; // Adjust the path as needed
+
 class CrearButton extends HTMLElement {
     constructor() {
         super();
@@ -10,17 +12,19 @@ class CrearButton extends HTMLElement {
             <button id="crearButton">Crear</button>
         `;
 
-        this.root.getElementById('crearButton').addEventListener('click', () => {
+        const crearButton = this.root.getElementById('crearButton');
+        crearButton.addEventListener('click', () => {
             const articleContent = document.getElementById('articleContent');
-            const body = document.body;
-            if (articleContent.style.display === 'none' || articleContent.style.display === '') {
-                articleContent.style.display = 'block';
-                body.classList.remove('full-header');
-            } else {
-                articleContent.style.display = 'none';
-                body.classList.add('full-header');
-            }
+            toggleView(articleContent.style.display === 'none' || articleContent.style.display === '');
         });
+
+        // Initially hide the article if needed
+        const articleContent = document.getElementById('articleContent');
+        if (articleContent.style.display === 'none' || articleContent.style.display === '') {
+            crearButton.textContent = 'Crear documento';
+        } else {
+            crearButton.textContent = 'Buscar documento';
+        }
     }
 }
 

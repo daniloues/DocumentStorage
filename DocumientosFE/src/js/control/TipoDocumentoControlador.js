@@ -12,7 +12,6 @@ export class TipoDocumentoControlador extends AccesoADatos {
         return 'TipoDocumento';
     }
 
-
     getApiUrl() {
         return `http://localhost:9090/Documientos-QS17002/resources/tipodocumento`;
     }

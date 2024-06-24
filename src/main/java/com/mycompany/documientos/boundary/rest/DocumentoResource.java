@@ -69,7 +69,7 @@ public class DocumentoResource implements Serializable {
             @PathParam("idDocumento")
             final Integer idDocumento) {
         if (idDocumento != null) {
-            
+
             Documento findById = dBean.findById(Long.valueOf(idDocumento.toString()));
             if (findById != null) {
                 return Response.status(Response.Status.OK).entity(findById).build();
@@ -80,33 +80,53 @@ public class DocumentoResource implements Serializable {
                 header("missing-parameter", "id").
                 build();
     }
-    
-    
-    
-    
+
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    @Path("/{idDocumento}/metadato/{idMetadato}")
-    public Response findTaxonomiaById(
-            @PathParam("idDocumento") final Integer idDocumento,
-            @PathParam("idMetadato") final Integer idMetadato) {
-        if (idDocumento != null && idMetadato != null) {
-            // You may need to adjust this based on your implementation
-            Metadato metadatoExists = mBean.findMetadatoByDocumentoExists(idDocumento, idMetadato);
-            if (metadatoExists != null) {
-                return Response.status(Response.Status.OK).entity(metadatoExists).build();
-            }
-            return Response.status(Response.Status.NOT_FOUND)
-                    .header("not-found", "Attribute not found for TipoDocumento ID: " + idDocumento + " and Atributo ID: " + idMetadato)
-                    .build();
+    @Path("/atributo/{idAtributo}/")
+    public List<Documento> findByAtributo(
+            @PathParam("idAtributo")
+            final Integer idAtributo) {
+        // Add logging to trace the request
+        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Received request with idAtributo: {0}", idAtributo);
+
+        if (idAtributo != null) {
+            // Add logging to trace the method execution
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Processing idAtributo: {0}", idAtributo);
+
+            // Assuming mBean is correctly initialized and findAllDocumentoByAtributo is implemented
+            return mBean.findAllDocumentoByAtributo(idAtributo);
         }
-        return Response.status(422)
-                .header("missing-parameter", "id")
-                .entity("Both TipoDocumento ID and Atributo ID must be provided")
-                .build();
+
+        Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "idAtributo is null");
+        return null;
+    }
+
+        @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    @Path("/atributo/{idAtributo}/{valor}")
+    public List<Documento> findByAtributoAndValor(
+            @PathParam("idAtributo")
+            final Integer idAtributo,
+            @PathParam("valor")
+            final String valor) {
+        // Add logging to trace the request
+        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Received request with idAtributo: {0}", idAtributo);
+
+        if (idAtributo != null) {
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Processing idAtributo: {0}", idAtributo);
+
+            return mBean.findAllDocumentoByAtributoAndValue(idAtributo, valor);
+        }
+
+        Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "idAtributo is null");
+        return null;
     }
     
-    
+   
+                    
+                    
+
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     @Path("/{idDocumento}/taxonomia/{idTaxonomia}")
@@ -128,8 +148,6 @@ public class DocumentoResource implements Serializable {
                 .entity("Both TipoDocumento ID and Atributo ID must be provided")
                 .build();
     }
-    
-    
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)

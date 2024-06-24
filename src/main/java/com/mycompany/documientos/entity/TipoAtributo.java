@@ -4,6 +4,7 @@
  */
 package com.mycompany.documientos.entity;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -52,6 +53,7 @@ public class TipoAtributo implements Serializable {
     @Column(name = "indicaciones_screen")
     private String indicacionesScreen;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTipoAtributo")
+        @JsonbTransient
     private Collection<Atributo> atributoCollection;
 
     public TipoAtributo() {

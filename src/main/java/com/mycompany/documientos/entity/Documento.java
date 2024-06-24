@@ -4,6 +4,7 @@
  */
 package com.mycompany.documientos.entity;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -61,8 +62,10 @@ public class Documento implements Serializable {
     private String creadoPor;
     @Column(name = "comentarios")
     private String comentarios;
+    @JsonbTransient
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idDocumento")
     private Collection<Metadato> metadatoCollection;
+    @JsonbTransient
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idDocumento")
     private Collection<Taxonomia> taxonomiaCollection;
 

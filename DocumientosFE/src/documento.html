@@ -9,22 +9,21 @@
 <body class="full-header">
     <header>
         <buscar-doc></buscar-doc>
-        <crear-button></crear-button>
         <script type="module" src="./js/boundary/componentes/buscadorCE.js"></script>
-        <script type="module" src="./js/boundary/componentes/crearButtonCE.js"></script>
     </header>
+    <crear-button></crear-button>
+    <script type="module" src="./js/boundary/componentes/crearButtonCE.js"></script>
     <article id="articleContent">
         <div class="form-section">
-            <h2>TipoDocumento</h2>
+            <h2>Tipo de documento</h2>
             <tipo-doc></tipo-doc>
             <script type="module" src="./js/boundary/componentes/tipoCE.js"></script>
         </div>
-        <div id="documentoMostrar" class="form-section-doc">
+        <div id="documentoMostrar" class="form-section-doc" style="display: none;">
             <h2>Documento</h2>
-            <documento-doc id-tipo-documento-a = "2"></documento-doc>
+            <documento-doc></documento-doc>
             <script type="module" src="./js/boundary/componentes/documentoCE.js"></script>
         </div>
     </article>
-    
 </body>
 </html>

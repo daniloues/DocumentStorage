@@ -50,6 +50,7 @@ public class TipoDocumento implements Serializable {
     @JsonbTransient
     private Collection<Atributo> atributoCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTipoDocumento")
+    @JsonbTransient
     private Collection<Taxonomia> taxonomiaCollection;
 
     public TipoDocumento() {
@@ -90,19 +91,17 @@ public class TipoDocumento implements Serializable {
     public void setObservaciones(String observaciones) {
         this.observaciones = observaciones;
     }
-
+    @JsonbTransient
     public Collection<Atributo> getAtributoCollection() {
         return atributoCollection;
     }
-
     public void setAtributoCollection(Collection<Atributo> atributoCollection) {
         this.atributoCollection = atributoCollection;
     }
-
+    @JsonbTransient
     public Collection<Taxonomia> getTaxonomiaCollection() {
         return taxonomiaCollection;
     }
-
     public void setTaxonomiaCollection(Collection<Taxonomia> taxonomiaCollection) {
         this.taxonomiaCollection = taxonomiaCollection;
     }

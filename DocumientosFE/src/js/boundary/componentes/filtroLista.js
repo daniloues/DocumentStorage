@@ -7,21 +7,29 @@ class FiltrarLista extends HTMLElement {
     }
 
     connectedCallback() {
-        console.log("Me conecté al filtrar-lista componente ahorita");
         const controlador = new TipoAtributoControlador();
 
         controlador.findAll()
             .then(attributes => {
-                console.log(attributes);
                 this.root.innerHTML = `
                     <link rel='stylesheet' type='text/css' media='screen' href='./resources/estilos/estilo.css'>
                     <div>
                         <select id="filterSelect">
-                            <option value="Selecciona atributo">All</option>
                             ${attributes.map(attr => `<option value="${attr.idTipoAtributo}">${attr.nombreScreen}</option>`).join('')}
                         </select>
                     </div>
                 `;
+
+                const selectElement = this.root.querySelector('#filterSelect');
+                selectElement.addEventListener('change', (event) => {
+                    const selectedValue = event.target.value;
+                    console.log(selectedValue);
+                    this.dispatchEvent(new CustomEvent('filter-changed', {
+                        detail: { idAtributo: selectedValue },
+                        bubbles: true,
+                        composed: true
+                    }));
+                });
             })
             .catch(error => {
                 console.error('Error fetching attributes:', error);
@@ -32,7 +40,6 @@ class FiltrarLista extends HTMLElement {
                 `;
             });
     }
-
 }
 
 customElements.define('filtrar-lista', FiltrarLista);

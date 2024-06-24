@@ -28,6 +28,9 @@ import java.util.Date;
 @Table(name = "metadato")
 @NamedQueries({
     @NamedQuery(name = "Metadato.findAll", query = "SELECT m FROM Metadato m"),
+    @NamedQuery(name = "Metadato.findMetadatoByIdDocumento", query = "SELECT m FROM Metadato m WHERE m.idDocumento.idDocumento = :idDocumento"),
+    @NamedQuery(name = "Metadato.findAllDocumentoByAtributoAndValor", query = "SELECT m.idDocumento FROM Metadato m WHERE m.idAtributo.idTipoAtributo.idTipoAtributo = :idAtributo AND m.valor LIKE CONCAT('%', :valor, '%')"),
+    @NamedQuery(name = "Metadato.findAllDocumentoByAtributo", query = "SELECT m.idDocumento FROM Metadato m WHERE m.idAtributo.idAtributo = :idAtributo"),
     @NamedQuery(name = "Metadato.findMetadatoByDocumentoExists", query = "SELECT m FROM Metadato m JOIN m.idDocumento d WHERE d.idDocumento = :idDocumento AND m.idMetadato = :idMetadato"),
     @NamedQuery(name = "Metadato.findByIdMetadato", query = "SELECT m FROM Metadato m WHERE m.idMetadato = :idMetadato"),
     @NamedQuery(name = "Metadato.findByValor", query = "SELECT m FROM Metadato m WHERE m.valor = :valor"),

@@ -1,11 +1,14 @@
+
 body {
   display: grid;
   height: 100vh;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr 5fr;
+  grid-template-rows: auto 1fr;
   grid-template-areas:
     "header"
     "article";
+  background-color: #35331a; /* Ensure background color is set */
+  position: relative; /* To position the button absolutely */
 }
 
 body.full-header {
@@ -17,7 +20,7 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #1A423B;
+  background-color: #35331a;
   flex-direction: column;
   height: 100vh;
 }
@@ -26,21 +29,12 @@ body:not(.full-header) header {
   height: auto;
 }
 
-
-.form-section {
+.form-section, .form-section-doc {
   margin-bottom: 20px;
-  background-color: #4A1D51;
+  background-color: #666846;
   padding: 20px;
   border-radius: 10px;
 }
-
-.form-section-doc {
-  margin-bottom: 20px;
-  background-color: #4A1D51;
-  padding: 20px;
-  border-radius: 10px;
-}
-
 
 .form-section h2 {
   margin-bottom: 10px;
@@ -50,19 +44,10 @@ body:not(.full-header) header {
 
 article {
   grid-area: article;
-  background-color: #1A423B;
-  display: none; 
+  background-color: #35331a;
   overflow-y: auto; 
   color: white;
-}
-
-header {
-  grid-area: header;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #1A423B;
-  flex-direction: column;
+  display: none;
 }
 
 .search-container {
@@ -93,20 +78,17 @@ filtrar-lista, texto-filtro {
   padding: 10px 20px;
   font-size: 1rem;
   border: none;
-  background-color: #1A423B;
   color: white;
   border-radius: 5px;
   cursor: pointer;
 }
 
-#searchButton:hover {
-  background-color: #145a4a;
-}
 
 select {
   padding: 10px;
   font-size: 1rem;
   border: 1px solid #ccc;
+  background-color: #566f0c;
   border-radius: 5px;
   width: 150px;
 }
@@ -119,20 +101,17 @@ input[type="text"] {
   width: 300px; 
 }
 
-
 #crearButton {
-  padding: 10px 20px;
-  font-size: 1rem;
+  padding: 20px 40px;
+  font-size: 1.5rem;
   border: none;
-  background-color: #1A423B;
   color: white;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
-  margin-top: 20px;
-}
-
-#crearButton:hover {
-  background-color: #145a4a;
+  position: absolute; /* Position it at the top center */
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 
@@ -155,21 +134,13 @@ contenedor-input input {
   margin-left: 10px; 
 }
 
-
 #articleContent {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-
-.documento-doc {
-  width: 100%;
-  max-width: 600px;
-  margin: 20px 0;
-}
-
-.tipo-doc{
+.documento-doc, .tipo-doc {
   width: 100%;
   max-width: 600px;
   margin: 20px 0;
@@ -179,12 +150,33 @@ button {
   padding: 10px 20px;
   font-size: 1rem;
   border: none;
-  background-color: #511E59;
+  background-color: #566f0c;
   color: white;
   border-radius: 5px;
   cursor: pointer;
 }
 
 button:hover {
-  background-color: #511E59;
+  background-color: #c8df59;
+}
+
+.results-container {
+  margin-top: 10px;
+}
+
+.entidadDocumento {
+  padding: 10px;
+  border: 1px solid #b3c6ff;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+
+.button-container {
+  margin-top: 10px;
+  background-color: #566f0c;
+}
+
+.button-container button {
+  margin-right: 5px;
 }
