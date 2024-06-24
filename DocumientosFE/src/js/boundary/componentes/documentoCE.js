@@ -46,7 +46,7 @@ class DocumentoComponente extends HTMLElement {
         controlador.findAll().then(attributes => {
             const labels = attributes.map(atributo => atributo.nombrePantalla);
 
-            // Testing webhooks
+            // Testing webhooks 2
             
                 this.root.innerHTML = `
                 <contenedor-input labels='${JSON.stringify(labels)}' ${this.idDocumento !== -1 ? `documento='${this.idDocumento}'` : ''}></contenedor-input>
