@@ -200,42 +200,6 @@ public class DocumentoResource implements Serializable {
                 .build();
     }
 
-    // POST DE METADATO:
-    @POST
-    @Path("/{idDocumento}/metadato")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response createMetadato(
-            @PathParam("idDocumento") Integer idTipoDocumento,
-            Metadato nuevo) {
-
-        if (nuevo == null || idTipoDocumento == null) {
-            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)
-                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, "idTipoDocumento or nuevo is null")
-                    .build();
-        }
-
-        // Validate the attributes of the new Atributo object
-        if (nuevo.getIdAtributo() == null || nuevo.getIdDocumento() == null) {
-            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)
-                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, nuevo.toString())
-                    .build();
-        }
-
-        if (!Objects.equals(tBean.getTipoDocumentoByIdDocumento(Long.valueOf(nuevo.getIdDocumento().getIdDocumento().toString())), aBean.getTipoDocumentoById(Long.valueOf(nuevo.getIdAtributo().getIdAtributo().toString())))) {
-
-            return Response.status(405)
-                    .header("METODO-NO-POSIBLE", nuevo.toString())
-                    .build();
-
-        }
-
-        mBean.create(nuevo);
-        Long nuevoIdMetadato = tBean.getNewestId();
-        // Return a success response with the location of the created resource
-        return Response.status(Response.Status.CREATED)
-                .header("Location", "/tipodocumento/" + idTipoDocumento + "/atributo/" + nuevoIdMetadato)
-                .build();
-    }
 
 //    @POST
 //    @Produces({MediaType.APPLICATION_JSON})

@@ -287,14 +287,11 @@ public class PrimerParcialIT {
                 .resolveTemplate("idDocumento", ID_DOCUMENTO_CREADO)
                 .request(MediaType.APPLICATION_JSON);
         Response respuesta = builder.post(Entity.entity(null, MediaType.APPLICATION_JSON));
-        // payload nulo
         Assertions.assertEquals(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO, respuesta.getStatus());
-        // payload vacio
         respuesta = builder.post(Entity.entity(nuevo, MediaType.APPLICATION_JSON));
         Assertions.assertEquals(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO, respuesta.getStatus());
         Assertions.assertTrue(respuesta.getHeaders().containsKey(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO));
 
-        //// crear tipo de documento equivocado
         Invocation.Builder builderT = target.path("tipodocumento").request(MediaType.APPLICATION_JSON);
         TipoDocumento nuevoT = new TipoDocumento();
         nuevoT.setIdTipoDocumento(null);
