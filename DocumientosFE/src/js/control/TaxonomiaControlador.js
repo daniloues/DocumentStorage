@@ -12,7 +12,7 @@ export class TaxonomiaControlador extends AccesoADatos {
     }
 
     getApiUrl() {   
-        return `http://localhost:9090/Documientos-QS17002/resources/taxonomia/documento/`; 
+        return `http://localhost:9090/Documientos-1.0-SNAPSHOT/resources/taxonomia/documento/`; 
     }
     
     getTipoDocumentoByDocumento(idDocumento){

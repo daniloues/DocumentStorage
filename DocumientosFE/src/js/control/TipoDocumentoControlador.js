@@ -13,6 +13,6 @@ export class TipoDocumentoControlador extends AccesoADatos {
     }
 
     getApiUrl() {
-        return `http://localhost:9090/Documientos-QS17002/resources/tipodocumento`;
+        return `http://localhost:9090/Documientos-1.0-SNAPSHOT/resources/tipodocumento`;
     }
 }

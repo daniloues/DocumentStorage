@@ -12,6 +12,6 @@ export class TipoAtributoControlador extends AccesoADatos {
     }
 
     getApiUrl() {
-        return `http://localhost:9090/Documientos-QS17002/resources/tipoatributo`;
+        return `http://localhost:9090/Documientos-1.0-SNAPSHOT/resources/tipoatributo`;
     }
 }

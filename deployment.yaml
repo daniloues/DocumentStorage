@@ -12,6 +12,8 @@ spec:
       labels:
         app: payara
     spec:
+      imagePullSecrets:
+      - name: dockerhub-secret
       containers:
       - name: payara
         image: danilouesak/payara-parcial3:latest
@@ -19,7 +21,7 @@ spec:
         - containerPort: 9090
         env:
         - name: POSTGRES_HOST
-          value: "host.minikube.internal"  # Use host.minikube.internal to access services on the host
+          value: "host.minikube.internal"
         - name: POSTGRES_DB
           value: "documientostpi135"
         - name: POSTGRES_USER

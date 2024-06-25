@@ -14,7 +14,7 @@ export class DocumentoControlador extends AccesoADatos {
     }
 
     getApiUrl() {
-        return `http://localhost:9090/Documientos-QS17002/resources/documento`;
+        return `http://localhost:9090/Documientos-1.0-SNAPSHOT/resources/documento`;
     }
 
     getAllDocumentoByAtributoValor(idAtributoB, valorBusqueda){
