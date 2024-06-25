@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payara-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payara
+  template:
+    metadata:
+      labels:
+        app: payara
+    spec:
+      containers:
+      - name: payara
+        image: danilouesak/payara-parcial3:latest
+        ports:
+        - containerPort: 9090
+        env:
+        - name: POSTGRES_HOST
+          value: "host.minikube.internal"  # Use host.minikube.internal to access services on the host
+        - name: POSTGRES_DB
+          value: "documientostpi135"
+        - name: POSTGRES_USER
+          value: "postgres"
+        - name: POSTGRES_PASSWORD
+          value: "abc123"
