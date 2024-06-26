@@ -82,7 +82,8 @@ class DocumentoComponente extends HTMLElement {
 
     handleSaveClick() {
         const data = this.collectInputData();
-        const url = this.idDocumento !== -1 ? 'your-update-endpoint' : 'your-create-endpoint';
+        console.log(data);
+        const url = 'http://localhost:9090/Documientos-1.0-SNAPSHOT/resources/documento'
         const method = this.idDocumento !== -1 ? 'PUT' : 'POST';
 
         fetch(url, {

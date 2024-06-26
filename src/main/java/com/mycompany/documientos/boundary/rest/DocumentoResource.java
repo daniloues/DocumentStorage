@@ -155,6 +155,7 @@ public class DocumentoResource implements Serializable {
 
         if (nuevo != null && nuevo.getNombre() != null && nuevo.getCreadoPor() != null && nuevo.getUbicacionFisica() != null) {
             try {
+                
                 dBean.create(nuevo);
                 return Response.status(Response.Status.CREATED)
                         .header("Location", "/documento/" + nuevo.getIdDocumento())
